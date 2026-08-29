@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Visual flash notification on session end (BOARD: .timer-card flash) */
+@keyframes timer-flash {
+  0%   { background-color: var(--color-terracotta); }
+  100% { background-color: var(--color-surface); }
+}
+.flash {
+  animation: timer-flash 600ms ease;
+}
+
+/* Break-mode accent: card border + mode label tint */
+#timer-card.is-break {
+  border-color: var(--color-leaf);
+}
+#timer-card.is-break #mode-label {
+  color: var(--color-leaf);
+}
+
+/* Keep time display tabular so digits don't jitter while counting */
+#time-display {
+  font-variant-numeric: tabular-nums;
+}
