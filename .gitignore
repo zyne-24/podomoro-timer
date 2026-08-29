@@ -14,3 +14,6 @@ secrets/
 # Editor / OS
 .DS_Store
 *.log
+
+# Project internal board (ga usah di-repo)
+BOARD.md
