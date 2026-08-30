@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import { fetchOne, getProducts } from '../../lib/data';
+
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products.map((p) => ({
+    params: { id: p.id },
+  }));
+}
+
+const { id } = Astro.params;
+const product = await fetchOne('products', id as string);
+
+if (!product) return Astro.redirect('/katalog');
+---
+
+<Base title={`${product.title} &mdash; Konveksi Nusa`}>
+  <section class="py-24 container-page" x-data={`{ 
+      price: ${product.price}, 
+      qty: ${product.min_order || 24}, 
+      size: '',
+      note: '',
+      get total() { return this.qty * this.price },
+      checkoutUrl() {
+        return 'https://wa.me/628123456789?text=' + encodeURIComponent('Halo Konveksi Nusa, saya mau pesan ' + '${product.title}' + ' jumlah ' + this.qty + ' pcs. Total: Rp ' + this.total.toLocaleString('id-ID') + '. Catatan: ' + this.note);
+      }
+    }`}>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <!-- Product Info -->
+      <div class="space-y-8">
+        <div class="h-96 bg-paper-200 rounded-3xl flex items-center justify-center font-display text-noir-900/30 text-2xl">
+          Foto Produk: {product.title}
+        </div>
+        <div class="space-y-4">
+          <h1 class="font-display text-5xl font-normal text-noir-900">{product.title}</h1>
+          <p class="text-lg text-noir-700 leading-relaxed">{product.description}</p>
+          <div class="flex items-center gap-4 text-sm">
+            <span class="bg-paper-200 px-4 py-2 rounded-lg font-semibold">Min. Order: {product.min_order} Pcs</span>
+            <span class="text-noir-500">Tersedia Ukuran: {product.sizes?.join(', ') || 'S, M, L, XL'}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculator Form -->
+      <div class="card p-8 bg-paper-100/50 space-y-6 sticky top-28">
+        <h2 class="font-display text-2xl font-bold">Kalkulasi Estimasi</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-noir-900 mb-2">Pilih Ukuran</label>
+            <select x-model="size" class="w-full bg-paper-50 border border-noir-900/15 p-3 rounded-lg">
+              <option value="">Pilih ukuran...</option>
+              {(product.sizes || ['S', 'M', 'L', 'XL']).map(s => <option value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-noir-900 mb-2">Jumlah (Pcs)</label>
+            <input type="number" x-model.number="qty" min={product.min_order || 24} class="w-full bg-paper-50 border border-noir-900/15 p-3 rounded-lg" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-widest text-noir-900 mb-2">Catatan Pesanan</label>
+            <textarea x-model="note" class="w-full bg-paper-50 border border-noir-900/15 p-3 rounded-lg" rows="3" placeholder="Contoh: Warna bahan navy, sablon logo di dada kiri..."></textarea>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-noir-900/10 flex justify-between items-center">
+          <span class="font-semibold text-noir-900">Total Estimasi:</span>
+          <span class="font-display font-bold text-3xl text-ember-600" x-text="'Rp ' + total.toLocaleString('id-ID')"></span>
+        </div>
+
+        <a :href="checkoutUrl()" target="_blank" class="btn-primary w-full py-4 text-lg">Pesan via WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Base>

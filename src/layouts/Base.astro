@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Konveksi Nusa — Produksi pakaian custom & garmen lokal berkualitas butik." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="bg-paper-50 text-noir-900 flex flex-col min-h-screen">
+    
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-paper-50/80 backdrop-blur-md border-b border-noir-900/10">
+      <div class="container-page h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-noir-900 text-paper-50 flex items-center justify-center font-display font-semibold text-lg group-hover:bg-ember-600 transition-colors">
+            N
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-lg tracking-tight">Konveksi Nusa</span>
+            <span class="text-[10px] tracking-widest uppercase text-noir-900/60 font-semibold">Garmen & Apparel</span>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-noir-800">
+          <a href="/" class="hover:text-ember-600 transition">Utama</a>
+          <a href="/katalog" class="hover:text-ember-600 transition">Katalog</a>
+          <a href="/blog" class="hover:text-ember-600 transition">Blog & Artikel</a>
+          <a href="/admin" class="hover:text-ember-600 transition text-ember-600 font-semibold">Admin Dashboard</a>
+        </nav>
+
+        <div>
+          <a href="/katalog" class="btn-primary text-sm py-2.5 px-5">Pesan Sekarang</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-noir-900 text-paper-200 py-16 mt-24 border-t border-noir-800">
+      <div class="container-page grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div class="space-y-4 md:col-span-2">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-ember-600 text-paper-50 flex items-center justify-center font-display font-bold">
+              N
+            </div>
+            <span class="font-display font-bold text-lg text-paper-50">Konveksi Nusa</span>
+          </div>
+          <p class="text-sm text-paper-300 max-w-sm leading-relaxed">
+            Mitra terpercaya untuk produksi seragam perusahaan, korsa organisasi, kaos event, dan jaket dengan standar kualitas jahitan butik dan ketepatan waktu.
+          </p>
+        </div>
+        <div class="space-y-3">
+          <h4 class="text-xs font-semibold uppercase tracking-widest text-paper-400">Navigasi</h4>
+          <ul class="space-y-2 text-sm text-paper-300">
+            <li><a href="/" class="hover:text-paper-50 transition">Beranda</a></li>
+            <li><a href="/katalog" class="hover:text-paper-50 transition">Katalog Produk</a></li>
+            <li><a href="/blog" class="hover:text-paper-50 transition">Artikel & Edukasi</a></li>
+            <li><a href="/admin" class="hover:text-paper-50 transition">Admin CMS</a></li>
+          </ul>
+        </div>
+        <div class="space-y-3">
+          <h4 class="text-xs font-semibold uppercase tracking-widest text-paper-400">Lokasi & Kontak</h4>
+          <p class="text-sm text-paper-300 leading-relaxed">
+            Workshop & Kantor:<br />
+            Jl. Garmen Raya No. 12<br />
+            Bandung, Jawa Barat
+          </p>
+        </div>
+      </div>
+      <div class="container-page mt-12 pt-8 border-t border-noir-800 text-xs text-paper-400 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p>&copy; 2026 Konveksi Nusa. Hak cipta dilindungi.</p>
+        <p class="text-paper-300">Dibangun dengan standar kualitas tinggi &mdash; tanpa AI-slop.</p>
+      </div>
+    </footer>
+
+  </body>
+</html>

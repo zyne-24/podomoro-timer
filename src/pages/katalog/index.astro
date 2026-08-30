@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProducts } from '../../lib/data';
+
+const products = await getProducts();
+---
+
+<Base title="Katalog Produk &mdash; Konveksi Nusa">
+  <section class="py-24 container-page">
+    <div class="max-w-3xl mb-16 space-y-4">
+      <p class="eyebrow">Pilihan Produk</p>
+      <h1 class="font-display text-5xl font-normal text-noir-900 tracking-tight">Katalog Apparel Custom</h1>
+      <p class="text-lg text-noir-700/80">Temukan bahan dan model terbaik untuk seragam atau merchandise komunitas Anda.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {products.map((product) => (
+        <a href={`/katalog/${product.id}`} class="card block overflow-hidden group">
+          <div class="h-64 bg-paper-200 flex items-center justify-center font-display text-noir-700/50 text-lg group-hover:bg-paper-300 transition-colors">
+            {product.title}
+          </div>
+          <div class="p-6 space-y-3">
+            <span class="inline-block text-xs font-semibold bg-paper-200 text-noir-800 px-3 py-1 rounded-full">
+              Min. {product.min_order || 24} Pcs
+            </span>
+            <h3 class="font-display text-xl font-bold text-noir-900">{product.title}</h3>
+            <p class="text-sm text-noir-700 leading-relaxed line-clamp-2">{product.description}</p>
+            <div class="pt-2 font-display font-bold text-lg text-ember-600">
+              Mulai dari Rp {Number(product.price).toLocaleString('id-ID')}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

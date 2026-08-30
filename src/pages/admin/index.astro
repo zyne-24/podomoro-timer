@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProducts, getArticles } from '../../lib/data';
+
+const products = await getProducts();
+const articles = await getArticles();
+const pbUrl = import.meta.env.PUBLIC_PB_URL || 'http://127.0.0.1:8090';
+---
+
+<Base title="Admin Dashboard &mdash; Konveksi Nusa">
+  <section class="py-16 container-page">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
+      <div class="space-y-2">
+        <p class="eyebrow">Area Admin</p>
+        <h1 class="font-display text-4xl font-normal text-noir-900 tracking-tight">Dashboard Manajemen</h1>
+        <p class="text-noir-700/80">Kelola produk, pesanan, dan konten blog dari satu panel terpusat.</p>
+      </div>
+      <a href={`${pbUrl}/_/`} target="_blank" class="btn-primary">Buka Panel Admin PocketBase</a>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+      <div class="card p-6 space-y-2">
+        <p class="eyebrow">Jumlah Produk</p>
+        <p class="font-display text-5xl font-bold text-noir-900">{products.length}</p>
+        <a href={`${pbUrl}/_/#/collections/products`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline">Kelola Produk &rarr;</a>
+      </div>
+      <div class="card p-6 space-y-2">
+        <p class="eyebrow">Jumlah Artikel</p>
+        <p class="font-display text-5xl font-bold text-noir-900">{articles.length}</p>
+        <a href={`${pbUrl}/_/#/collections/articles`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline">Kelola Blog &rarr;</a>
+      </div>
+      <div class="card p-6 space-y-2">
+        <p class="eyebrow">Pesanan</p>
+        <p class="font-display text-5xl font-bold text-noir-900">0</p>
+        <a href={`${pbUrl}/_/#/collections/orders`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline">Lihat Orders &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Management Sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <!-- Products management -->
+      <div class="card p-8 space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="font-display text-2xl font-bold">Manajemen Produk</h2>
+          <a href={`${pbUrl}/_/#/collections/products`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline">+ Produk Baru</a>
+        </div>
+        <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+          {products.map((p) => (
+            <div class="flex items-center justify-between border border-noir-900/10 rounded-lg px-4 py-3 bg-paper-50">
+              <div class="min-w-0">
+                <p class="font-semibold text-noir-900 truncate">{p.title}</p>
+                <p class="text-xs text-noir-500">Rp {Number(p.price).toLocaleString('id-ID')} &bull; Min {p.min_order || 24} pcs</p>
+              </div>
+              <a href={`${pbUrl}/_/#/collections/products/${p.id}`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline ml-4 whitespace-nowrap">Edit</a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Blog management -->
+      <div class="card p-8 space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="font-display text-2xl font-bold">Manajemen Blog</h2>
+          <a href={`${pbUrl}/_/#/collections/articles`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline">+ Artikel Baru</a>
+        </div>
+        <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+          {articles.map((a) => (
+            <div class="flex items-center justify-between border border-noir-900/10 rounded-lg px-4 py-3 bg-paper-50">
+              <div class="min-w-0">
+                <p class="font-semibold text-noir-900 truncate">{a.title}</p>
+                <p class="text-xs text-noir-500">{a.published_date}</p>
+              </div>
+              <a href={`${pbUrl}/_/#/collections/articles/${a.id}`} target="_blank" class="text-xs font-semibold text-ember-600 hover:underline ml-4 whitespace-nowrap">Edit</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 p-6 border border-moss-600/30 bg-moss-600/10 rounded-xl">
+      <p class="text-sm text-noir-800">
+        <strong>Catatan Keamanan:</strong> Panel admin PocketBase dikunci di balik <span class="font-mono text-xs bg-noir-900/10 px-1.5 py-0.5 rounded">{pbUrl}</span> (localhost bind) + Twingate, sesuai standar &mdash; tidak terekspos ke internet publik.
+      </p>
+    </div>
+  </section>
+</Base>

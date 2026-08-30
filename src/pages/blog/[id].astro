@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { fetchOne, getArticles } from '../../lib/data';
+
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return articles.map((a) => ({
+    params: { id: a.id },
+  }));
+}
+
+const { id } = Astro.params;
+const article = await fetchOne('articles', id as string);
+
+if (!article) return Astro.redirect('/blog');
+---
+
+<Base title={`${article.title} &mdash; Konveksi Nusa`}>
+  <article class="py-24 container-page max-w-4xl">
+    <div class="mb-10 flex items-center gap-3 text-sm text-noir-500">
+      <a href="/blog" class="hover:text-ember-600 transition font-medium">&larr; Kembali ke Blog</a>
+      <span>&bull;</span>
+      <span>{article.published_date}</span>
+    </div>
+
+    <h1 class="font-display text-5xl font-normal text-noir-900 tracking-tight mb-8">{article.title}</h1>
+
+    <div class="prose prose-paper lg:prose-xl max-w-none prose-headings:font-display">
+      <p class="lead text-xl text-noir-700 leading-relaxed">{article.content}</p>
+    </div>
+  </article>
+</Base>
