@@ -1,23 +1,16 @@
 {
-  "name": "konveksi-nusa",
-  "version": "1.0.0",
-  "description": "Konveksi Nusa - landing, ecommerce, admin dashboard & blog",
+  "name": "pomodoro-timer",
   "type": "module",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "pb:setup": "node pb_setup.mjs"
+    "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^4.16.19",
-    "@astrojs/tailwind": "^5.1.5",
-    "tailwindcss": "^3.4.0",
-    "tailwindcss-typography": "^1.0.0",
-    "lucide-astro": "^0.469.0",
-    "pocketbase": "^0.21.5"
-  },
-  "devDependencies": {
-    "dotenv": "^16.4.5"
+    "astro": "^4.5.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "tailwindcss": "^3.4.0"
   }
 }
